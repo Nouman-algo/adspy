@@ -104,7 +104,7 @@ export function LandingPage() {
             <p className="text-gray-600 mb-4">Newly launched Facebook ads library. Real Facebook ads.</p>
             <a href="#" className="text-blue-500 font-semibold flex items-center">
               Get Started
-              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="#3B82F6">
+              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd" fill="#3B82F6">
                <path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" />
              </svg>
 
@@ -119,7 +119,7 @@ export function LandingPage() {
             <p className="text-gray-600 mb-4">Newly launched Facebook ads library. Real Facebook ads.</p>
             <a href="#" className="text-blue-500 font-semibold flex items-center">
               Get Started
-              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="#3B82F6">
+              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd" fill="#3B82F6">
                <path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" />
              </svg>
 
@@ -133,7 +133,7 @@ export function LandingPage() {
             <p className="text-gray-600 mb-4">TikTok shop library is more than just ads, products, and stores.</p>
             <a href="#" className="text-blue-500 font-semibold flex items-center">
               Get Started
-              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="#3B82F6">
+              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd" fill="#3B82F6">
                <path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" />
              </svg>
 
@@ -147,7 +147,7 @@ export function LandingPage() {
             <p className="text-gray-600 mb-4">More profitable winning products.</p>
             <a href="#" className="text-blue-500 font-semibold flex items-center">
               Get Started
-              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" fill="#3B82F6">
+              <svg width="24" height="20" xmlns="http://www.w3.org/2000/svg" fillRule="evenodd" clipRule="evenodd" fill="#3B82F6">
                <path d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z" />
              </svg>
 
