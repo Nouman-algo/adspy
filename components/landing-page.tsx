@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { Plus_Jakarta_Sans } from 'next/font/google'
-import { BarChart3, Check, CheckCircle2, Lightbulb, PenTool, Search, Target, Zap } from 'lucide-react'
+import { BarChart3, CheckCircle2, Lightbulb, PenTool, Search, Target, Zap } from 'lucide-react'
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
