@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { Plus_Jakarta_Sans } from 'next/font/google'
 import { BarChart3, CheckCircle2, Lightbulb, PenTool, Search, Target, Zap } from 'lucide-react'
+import Link from 'next/link';
 
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'] })
 
@@ -20,8 +21,12 @@ export function LandingPage() {
           <a href="#" className="text-gray-600 hover:text-gray-900">Winning Products</a>
         </nav>
         <div className="hidden lg:flex items-center space-x-4">
-          <button className="text-gray-600 hover:text-gray-900">Log in</button>
-          <button className="bg-[#0095FF] text-white px-6 py-2 rounded-full hover:bg-blue-600">Sign up</button>
+          <button className="text-gray-600 hover:text-gray-900">
+            <Link href='/auth/login'>Log in</Link>
+          </button>
+          <button className="bg-[#0095FF] text-white px-6 py-2 rounded-full hover:bg-blue-600">
+          <Link href='/auth/sign-up'>Sign Up</Link>
+          </button>
         </div>
       </header>
       

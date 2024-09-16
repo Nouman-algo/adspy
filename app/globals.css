@@ -2,3 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Define the custom font */
+@font-face {
+    font-family: 'GeistVF';
+    src: url('/font/GeistVF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  /* Optionally, define additional weights and styles */
+  @font-face {
+    font-family: 'GeistMonoVF';
+    src: url('/font/GeistMonoVF.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+  

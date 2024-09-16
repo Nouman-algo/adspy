@@ -9,7 +9,12 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			'giestvf': ['GeistVF'], // custom font 
+			'giestmonovf':['GiestMonoVF']
+		  },
   		colors: {
+			'main':'#2E90FA',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
