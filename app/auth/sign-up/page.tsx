@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import logo from "../../../public/assets/login-signup/Logo.png";
 import image from "../../../public/assets/login-signup/Image.png";
-import Link from 'next/link'
-
+import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
 
 function SignUp() {
@@ -12,7 +11,21 @@ function SignUp() {
     fullName: "",
     email: "",
     password: "",
+    selectedPackage: ""
   });
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Load data from localStorage when the component is mounted
+  useEffect(() => {
+    const storedUserData = JSON.parse(localStorage.getItem("userCredentials") || "{}");
+    setFormData({
+      fullName: storedUserData.fullName || "",
+      email: storedUserData.email || "",
+      password: storedUserData.password || "",
+      selectedPackage: storedUserData.selectedPackage || "",
+    });
+  }, []);
 
   const handleChange = (e: any) => {
     setFormData({
@@ -23,8 +36,44 @@ function SignUp() {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    // Handle form submission here, e.g., send data to server
-    console.log(formData);
+    setError(null);  // Reset any previous error
+    setIsLoading(true); // Start loading
+
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Registration failed");
+      }
+
+      // Handle success: redirect to login page after registration
+      alert("Registration successful!");
+      localStorage.removeItem("userCredentials");  // Clear localStorage after registration
+      window.location.href = "/auth/login";  // Redirect to login page
+
+    } catch (error: any) {
+      setError(error.message);
+      console.error("Error during registration:", error.message);
+    } finally {
+      setIsLoading(false); // Stop loading
+    }
+  };
+
+  const handleSelectPlanClick = () => {
+    if (formData.fullName && formData.email && formData.password) {
+      localStorage.setItem("userCredentials", JSON.stringify(formData));
+      window.location.href = "/pricing";  // Redirect to pricing page
+    } else {
+      alert("Please fill in all fields and accept the terms and conditions.");
+    }
   };
 
   return (
@@ -108,7 +157,13 @@ function SignUp() {
             />
           </div>
 
-          {/* Checkbox and Forgot Password */}
+          {/* Error message */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
+          {/* Loading state */}
+          {isLoading && <p className="text-gray-500 text-sm">Registering...</p>}
+
+          {/* Checkbox and Select Plan */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -116,21 +171,27 @@ function SignUp() {
                 id="rememberMe"
                 name="rememberMe"
                 className="mr-2"
+                required
               />
               <label htmlFor="rememberMe" className="text-gray-700 text-sm">
                 I agree to the terms of use and privacy policy
               </label>
             </div>
 
-            <a href="#" className="text-blue-500 hover:underline text-sm">
-              select plan
-            </a>
+            <button
+              type="button"
+              onClick={handleSelectPlanClick}
+              className="text-blue-500 hover:underline text-sm"
+            >
+              Select Plan
+            </button>
           </div>
 
           {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-xl hover:bg-blue-600"
+            disabled={isLoading}
           >
             Sign Up
           </button>
@@ -152,15 +213,12 @@ function SignUp() {
             <p className="text-gray-500">
               Already have an account?{" "}
               <Link href='/auth/login'><span className="text-blue-500 hover:underline">Log In</span></Link>
-
             </p>
           </div>
         </form>
       </div>
 
       {/* Image Section */}
-
-
       <div className="w-full h-screen md:w-1/2 rounded-xl bg-main items-center justify-center flex flex-col p-6">
         <div className="bg-blue-400 p-4 rounded-xl">
           <Image
@@ -172,7 +230,7 @@ function SignUp() {
           />
         </div>
 
-        <h3 className="text-lg font-bold mt-8 text-white  text-center">
+        <h3 className="text-lg font-bold mt-8 text-white text-center">
           Discover Winning Ads and Best Viral Products
         </h3>
         <p className="text-sm text-gray-300 mt-6 text-center">
