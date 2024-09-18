@@ -11,8 +11,8 @@ export function LandingPage() {
       {/* Previous code remains unchanged */}
       <header className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Image src="public/assets/mainsectionImages/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" />
-          <Image src="public/assets/mainsectionImages/EASYSPY.png" alt="EasySpy" width={120} height={24} />
+          <Image src="/assets/mainsectionIMAGES/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" unoptimized />
+          <Image src="/assets/mainsectionIMAGES/EASYSPY.png" alt="EasySpy" width={120} height={24} unoptimized />
         </div>
         <nav className="hidden lg:flex space-x-6 mr-64">
           <a href="#" className="text-gray-600 hover:text-gray-900">Home</a>
@@ -485,7 +485,7 @@ export function LandingPage() {
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div className="flex items-center mb-4 md:mb-0">
-              <Image src="public/assets/mainsectionImages/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" />
+              <Image src="/assets/mainsectionIMAGES/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" unoptimized/>
               <h1 className='text-white font-bold'>EASYSPY</h1>
             </div>
             <button className="bg-[#0095FF] text-white px-6 py-2 rounded-full hover:bg-blue-600">
