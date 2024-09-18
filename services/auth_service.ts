@@ -11,20 +11,24 @@ class AuthService {
     this.userRepository = new UserRepository();
   }
 
- 
-  async register(registerData:IUser): Promise<IUser> {
-    
+
+
+  
+  async register(registerData: IUser): Promise<IUser> {
     if (!isValidEmail(registerData.email)) {
       throw new Error('Invalid email format');
     }
-
+  
     const existingUser = await this.userRepository.findByEmail(registerData.email);
     if (existingUser) {
       throw new Error('Email already in use');
-      
     }
-
-    const hashedPassword = await bcrypt.hash(registerData.password, 10);
+  
+    let hashedPassword: string | undefined;
+    if (registerData.password) {
+      hashedPassword = await bcrypt.hash(registerData.password, 10);
+    }
+  
     const newUser = new User({ ...registerData, password: hashedPassword });
     await newUser.save();
     return newUser;
@@ -33,23 +37,30 @@ class AuthService {
 
 
   async login(loginDTO: { email: string; password: string }): Promise<IUser> {
-
     if (!isValidEmail(loginDTO.email)) {
       throw new Error('Invalid email format');
     }
-
+  
     const user = await this.userRepository.findByEmail(loginDTO.email);
     if (!user) {
       throw new Error('Invalid credentials');
     }
-    
-    const isMatch = await bcrypt.compare(loginDTO.password,user.password);
-    if (!isMatch) {
-      throw new Error('Invalid credentials');
+  
+   
+    if (loginDTO.password) {
+      // If a password is provided, compare it
+      if (!user.password) {
+        throw new Error('No password set for this user');
+      }
+      const isMatch = await bcrypt.compare(loginDTO.password, user.password);
+      if (!isMatch) {
+        throw new Error('Invalid credentials');
+      }
     }
-
+  
     return user;
   }
+  
 }
 
 

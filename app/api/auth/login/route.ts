@@ -9,6 +9,13 @@ export async function POST(req: NextRequest) {
   try {
     const authService = new AuthService();
     const { email, password } = await req.json();
+
+      
+    // Check if password is optional
+    if (!password) {
+      console.log('Login request without password');
+    }
+    
     const user = await authService.login({ email, password });
 
     // Generate JWT token

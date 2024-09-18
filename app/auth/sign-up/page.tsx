@@ -6,7 +6,12 @@ import image from "../../../public/assets/login-signup/Image.png";
 import Link from 'next/link';
 import { FcGoogle } from "react-icons/fc";
 
+import {useSession, signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
 function SignUp() {
+  const { data: session } = useSession();
+  const router = useRouter()
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -22,9 +27,48 @@ function SignUp() {
     setFormData({
       fullName: storedUserData.fullName || "",
       email: storedUserData.email || "",
-      password: storedUserData.password || "",
+      password: storedUserData?.password || "",
       selectedPackage: storedUserData.selectedPackage || "",
     });
+
+    //##########to handle sign up with google button
+    const {email , fullName , selectedPackage} = storedUserData;
+    if(email && fullName && selectedPackage){
+      const registerUser = async () =>{
+        try{
+          const response =  await fetch('/api/auth/register', {
+            method: 'POST',
+             headers: {
+              'Content-Type': 'application/json',
+            },
+              body: JSON.stringify({ fullName , email , selectedPackage}),
+
+          });
+
+          if(response.ok){
+              alert('Sign up successful');
+            // Clear local storage
+            localStorage.removeItem('fullName');
+            localStorage.removeItem('email');
+            localStorage.removeItem('selectedPackage');
+            // Redirect to login page
+            router.push('/auth/login');
+          }
+          else{
+            console.log('sign up failed with google')
+          }
+        }
+         catch (error) {
+          console.error('Error during sign up with google:', error);
+          // alert('An error occurred during sign up with google.');
+        }
+      };
+      registerUser()
+    }
+    else{
+      alert('no user details found from local storage')
+    }
+
   }, []);
 
   const handleChange = (e: any) => {
@@ -57,7 +101,7 @@ function SignUp() {
       // Handle success: redirect to login page after registration
       alert("Registration successful!");
       localStorage.removeItem("userCredentials");  // Clear localStorage after registration
-      window.location.href = "/auth/login";  // Redirect to login page
+      window.location.href = "/login";  // Redirect to login page
 
     } catch (error: any) {
       setError(error.message);
@@ -75,6 +119,31 @@ function SignUp() {
       alert("Please fill in all fields and accept the terms and conditions.");
     }
   };
+
+
+
+  const handleGoogleSignIn = async () => {
+    if (!session) {
+      // Sign in the user with Google
+      signIn('google');
+    } else {
+      // Get the user's email and name from the session
+      const { email, name } = session.user;
+
+      // Save to local storage
+      const userCredentials = {
+        email,
+        fullName: name,
+      };
+      try {
+        localStorage.setItem('userCredentials', JSON.stringify(userCredentials));
+        router.push('/pricing'); // Redirect to the pricing page
+      } catch (error) {
+        console.error('Error storing user credentials in local storage:', error);
+      }
+    }
+  };
+
 
   return (
     <div className="w-full flex flex-col md:flex-row items-center justify-between">
@@ -164,6 +233,13 @@ function SignUp() {
           {isLoading && <p className="text-gray-500 text-sm">Registering...</p>}
 
           {/* Checkbox and Select Plan */}
+          {/* Error message */}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+
+          {/* Loading state */}
+          {isLoading && <p className="text-gray-500 text-sm">Registering...</p>}
+
+          {/* Checkbox and Select Plan */}
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <input
@@ -177,7 +253,6 @@ function SignUp() {
                 I agree to the terms of use and privacy policy
               </label>
             </div>
-
             <button
               type="button"
               onClick={handleSelectPlanClick}
@@ -201,6 +276,7 @@ function SignUp() {
             <p className="text-gray-500">OR</p>
             <button
               type="button"
+              onClick={handleGoogleSignIn}
               className="w-full bg-white border border-gray-300 text-gray-700 font-bold py-2 px-4 rounded-xl hover:bg-gray-100 flex items-center justify-center space-x-2"
             >
               <FcGoogle className="text-lg" />
@@ -230,6 +306,7 @@ function SignUp() {
           />
         </div>
 
+        <h3 className="text-lg font-bold mt-8 text-white text-center"></h3>
         <h3 className="text-lg font-bold mt-8 text-white text-center">
           Discover Winning Ads and Best Viral Products
         </h3>

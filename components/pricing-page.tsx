@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 type Plan = {
   name: string;
@@ -10,6 +11,8 @@ type Plan = {
 };
 
 const PricingPage: React.FC = () => {
+  const router = useRouter();
+
   const plans: Plan[] = [
     {
       name: 'Starter',
@@ -117,10 +120,10 @@ const PricingPage: React.FC = () => {
           ))}
         </div>
 
-        {/* Key Feature Table */}
-        <div className="my-5">
-          <h1 className="font-semibold text-2xl mb-5">Key Feature Detail</h1>
-        </div>
+          {/* Key Feature Table */}
+          <div className="my-5">
+            <h1 className="font-semibold text-2xl mb-5">Key Feature Detail</h1>
+          </div>
 
         <div className="container mx-auto p-4">
           <table className="min-w-full">
