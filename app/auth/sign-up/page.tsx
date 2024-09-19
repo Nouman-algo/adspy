@@ -14,6 +14,7 @@ function SignUp() {
     selectedPackage: ""
   });
   const [error, setError] = useState<string | null>(null);
+  const [selectPlanError, setSelectPlanError] = useState<string | null>(null); // State for select plan validation
   const [isLoading, setIsLoading] = useState(false);
 
   // Load data from localStorage when the component is mounted
@@ -32,6 +33,7 @@ function SignUp() {
       ...formData,
       [e.target.name]: e.target.value,
     });
+    setSelectPlanError(null); // Clear select plan error when input changes
   };
 
   const handleSubmit = async (e: any) => {
@@ -72,7 +74,7 @@ function SignUp() {
       localStorage.setItem("userCredentials", JSON.stringify(formData));
       window.location.href = "/pricing";  // Redirect to pricing page
     } else {
-      alert("Please fill in all fields and accept the terms and conditions.");
+      setSelectPlanError("Please fill in all fields and accept the terms and conditions."); // Set validation error
     }
   };
 
@@ -164,27 +166,34 @@ function SignUp() {
           {isLoading && <p className="text-gray-500 text-sm">Registering...</p>}
 
           {/* Checkbox and Select Plan */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                id="rememberMe"
-                name="rememberMe"
-                className="mr-2"
-                required
-              />
-              <label htmlFor="rememberMe" className="text-gray-700 text-sm">
-                I agree to the terms of use and privacy policy
-              </label>
+          <div className="flex flex-col">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="rememberMe"
+                  name="rememberMe"
+                  className="mr-2"
+                  required
+                />
+                <label htmlFor="rememberMe" className="text-gray-700 text-sm">
+                  I agree to the terms of use and privacy policy
+                </label>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleSelectPlanClick}
+                className="text-blue-500 hover:underline text-sm"
+              >
+                Select Plan
+              </button>
             </div>
 
-            <button
-              type="button"
-              onClick={handleSelectPlanClick}
-              className="text-blue-500 hover:underline text-sm"
-            >
-              Select Plan
-            </button>
+            {/* Show validation error */}
+            {selectPlanError && (
+              <span className="text-red-500 text-sm mt-1">{selectPlanError}</span>
+            )}
           </div>
 
           {/* Submit Button */}
