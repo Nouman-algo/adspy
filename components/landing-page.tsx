@@ -488,7 +488,7 @@ export function LandingPage() {
               <Image src="/assets/mainsectionImages/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" unoptimized/>
               <h1 className='text-white font-bold'>EASYSPY</h1>
             </div>
-            <button className="bg-[#0095FF] text-white px-6 py-2 rounded-full hover:bg-blue-600">
+            <button className="bg-[#2e5b7a] text-white px-6 py-2 rounded-full hover:bg-blue-600">
               Get Started
             </button>
           </div>
