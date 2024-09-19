@@ -20,6 +20,11 @@ function SignUp() {
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // Track if the terms checkbox is checked
+  const [termsError, setTermsError] = useState<string | null>(null); // Track terms checkbox validation
+  const [googleError, setGoogleError] = useState<string | null>(null); // Track Google sign-in errors
+  const [successMessage, setSuccessMessage] = useState<string | null>(null); // Track success messages
+
 
   // Load data from localStorage when the component is mounted
   useEffect(() => {
@@ -46,27 +51,27 @@ function SignUp() {
           });
 
           if(response.ok){
-              alert('Sign up successful');
+            setSuccessMessage("Sign up successful! Redirecting to login page...");
             // Clear local storage
             localStorage.removeItem('fullName');
             localStorage.removeItem('email');
             localStorage.removeItem('selectedPackage');
             // Redirect to login page
-            router.push('/auth/login');
+            setTimeout(() => router.push("/auth/login"), 2000); // Delay redirect to allow user to see success message
           }
           else{
-            console.log('sign up failed with google')
+            setGoogleError("An error occurred during sign up with Google.");
           }
         }
          catch (error) {
           console.error('Error during sign up with google:', error);
-          // alert('An error occurred during sign up with google.');
+          setGoogleError("An error occurred during sign up with Google.");
         }
       };
       registerUser()
     }
     else{
-      alert('no user details found from local storage')
+      setGoogleError("No user details found from local storage.");
     }
 
   }, []);
@@ -81,6 +86,7 @@ function SignUp() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setError(null);  // Reset any previous error
+    setSuccessMessage(null); // Reset any previous success message
     setIsLoading(true); // Start loading
 
     try {
@@ -99,9 +105,9 @@ function SignUp() {
       }
 
       // Handle success: redirect to login page after registration
-      alert("Registration successful!");
+      setSuccessMessage("Registration successful! Redirecting to login page...");
       localStorage.removeItem("userCredentials");  // Clear localStorage after registration
-      window.location.href = "/login";  // Redirect to login page
+      setTimeout(() => router.push("/auth/login"), 2000); // Redirect after a short delay
 
     } catch (error: any) {
       setError(error.message);
@@ -116,10 +122,15 @@ function SignUp() {
       localStorage.setItem("userCredentials", JSON.stringify(formData));
       window.location.href = "/pricing";  // Redirect to pricing page
     } else {
-      alert("Please fill in all fields and accept the terms and conditions.");
+      setError("Please fill in all fields and accept the terms and conditions.");
     }
   };
 
+
+  const handleCheckboxChange = (e: any) => {
+    setIsCheckboxChecked(e.target.checked);
+    setTermsError(null); // Reset error when the user checks the box
+  };
 
 
   const handleGoogleSignIn = async () => {
@@ -139,6 +150,7 @@ function SignUp() {
         localStorage.setItem('userCredentials', JSON.stringify(userCredentials));
         router.push('/pricing'); // Redirect to the pricing page
       } catch (error) {
+        setGoogleError("Error storing user credentials in local storage.");
         console.error('Error storing user credentials in local storage:', error);
       }
     }
@@ -229,13 +241,10 @@ function SignUp() {
           {/* Error message */}
           {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          {/* Loading state */}
-          {isLoading && <p className="text-gray-500 text-sm">Registering...</p>}
+          {googleError && <p className="text-red-500 text-sm">{googleError}</p>}
 
-          {/* Checkbox and Select Plan */}
-          {/* Error message */}
-          {error && <p className="text-red-500 text-sm">{error}</p>}
-
+          {successMessage && <p className="text-green-500 text-sm">{successMessage}</p>}
+          
           {/* Loading state */}
           {isLoading && <p className="text-gray-500 text-sm">Registering...</p>}
 
@@ -248,6 +257,8 @@ function SignUp() {
                 name="rememberMe"
                 className="mr-2"
                 required
+                checked={isCheckboxChecked}
+                onChange={handleCheckboxChange}
               />
               <label htmlFor="rememberMe" className="text-gray-700 text-sm">
                 I agree to the terms of use and privacy policy
@@ -257,10 +268,15 @@ function SignUp() {
               type="button"
               onClick={handleSelectPlanClick}
               className="text-blue-500 hover:underline text-sm"
+              disabled={!isCheckboxChecked}
             >
               Select Plan
             </button>
           </div>
+
+          {/* Show terms error message */}
+          {termsError && <p className="text-red-500 text-sm">{termsError}</p>}
+
 
           {/* Submit Button */}
           <button

@@ -19,8 +19,12 @@ function SignIn() {
   });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false); //for handling loading state
+
 
   const handleChange = (e: any) => {
+    setError(null);
+    setSuccess(null);
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -31,6 +35,22 @@ function SignIn() {
     e.preventDefault();
     setError(null); // Reset error message
     setSuccess(null); // Reset success message
+    setLoading(true); // Start loading
+
+    if (!formData.email || !formData.password) {
+      setError("Both email and password are required.");
+      setLoading(false);
+      return;
+    }
+
+    // Email format validation using a regular expression
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email address.");
+      setLoading(false);
+      return;
+    }
+
 
     try {
       const response = await fetch("/api/auth/login", {
@@ -61,6 +81,9 @@ function SignIn() {
     } catch (error) {
       setError("An unexpected error occurred");
     }
+    finally {
+      setLoading(false); // Stop loading
+    }
   };
 
   //handle google sign in
@@ -78,6 +101,7 @@ function SignIn() {
 
     setError(null); // Reset error message
     setSuccess(null); // Reset success message
+    setLoading(true); // Start loading for Google sign-in
 
     try{
       const response = await fetch("/api/auth/login", {
@@ -102,7 +126,6 @@ function SignIn() {
           router.push("/"); // Redirect to home or any other route
         }, 1000);
       } else {
-        // Handle errors
         setError(result.error || "An unexpected error occurred");
       }
 
@@ -110,6 +133,9 @@ function SignIn() {
     }catch(error){
       setError("An unexpected error occurred");
 
+    }
+    finally {
+      setLoading(false); // Stop loading
     }
   }
   };
@@ -157,6 +183,7 @@ function SignIn() {
               className="w-full px-3 py-2 border rounded-xl"
               placeholder="Enter your email"
               required
+              autoFocus
             />
           </div>
 
@@ -176,14 +203,20 @@ function SignIn() {
               className="w-full px-3 py-2 border rounded-xl"
               placeholder="Enter your password"
               required
+              autoFocus
             />
           </div>
 
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          {success && <p className="text-green-500 text-center">{success}</p>}
+          {error && <p role="alert" aria-live="assertive" className="text-red-500 text-center">{error}</p>}
+          {success && <p role="alert" aria-live="polite" className="text-green-500 text-center">{success}</p>}
+          
+          {/* Loading spinner */}
+          {loading && (
+            <div className="text-center">
+              <p>Loading...</p> 
+            </div>
+          )}
 
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          {success && <p className="text-green-500 text-center">{success}</p>}
 
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -206,11 +239,15 @@ function SignIn() {
             </a>
           </div>
 
+
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-xl hover:bg-blue-600"
+            className={`w-full bg-blue-500 text-white font-bold py-2 px-4 rounded-xl hover:bg-blue-600 ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading} // Disable button during loading
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
 
           <div className="mt-4 text-center">
