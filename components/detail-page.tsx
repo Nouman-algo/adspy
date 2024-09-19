@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import {FaShareAlt , FaHeart , FaEye , FaPlay , FaComment, FaThumbsUp, FaShareSquare, FaClock, FaCalendarAlt } from 'react-icons/fa';
+import {FaShareAlt , FaHeart , FaEye , FaPlay , FaComment, FaThumbsUp, FaShareSquare, FaCalendarAlt } from 'react-icons/fa';
 
 
 const DetailPage = () => {
