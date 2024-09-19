@@ -362,7 +362,7 @@ const Dashboard = () => {
         setDropdownIndex(dropdownIndex === index ? null : index);
     };
 
-    const handleOptionClick = (option: string) => {
+    const handleOptionClick = (option: string|JSX.Element) => {
         console.log('Selected option:', option);
         // Handle option selection
 
