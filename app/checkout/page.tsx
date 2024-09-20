@@ -5,6 +5,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
 
+
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
     throw new Error("NEXT_PUBLIC_STRIPE_PUBLIC_KEY is not defined");
 }
@@ -16,11 +17,25 @@ export default function Checkout() {
 
   // Use useEffect to run only on the client side
   useEffect(() => {
-    const name = localStorage.getItem("fullName");
-    if (name) {
-      setFullName(name);
+    const userCredentials = localStorage.getItem("userCredentials");
+  
+    if (userCredentials) {
+      // Parse the string into an object
+      const parsedCredentials = JSON.parse(userCredentials);
+      
+      // Get the first key
+      let first_key = Object.keys(parsedCredentials)[0];
+      
+      // Get the value of the first key
+      const name = parsedCredentials[first_key];
+      
+      // If the name exists, set it
+      if (name) {
+        setFullName(name);
+      }
     }
-  }, []); // Empty dependency array means this runs once after component mounts
+  }, []);
+   // Empty dependency array means this runs once after component mounts
     const searchParams = useSearchParams();
     const  amount  = searchParams.get('amount'); // Extract the amount from query parameters
 

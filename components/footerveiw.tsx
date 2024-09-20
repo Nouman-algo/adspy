@@ -6,7 +6,7 @@ const footer = () => {
     <div className="max-w-7xl mx-auto px-4">
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
         <div className="flex items-center mb-4 md:mb-0">
-          <Image src="/assets/mainsectionIMAGES/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" />
+          <Image src="/assets/mainsectionImages/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" />
           <h1 className='text-white font-bold'>EASYSPY</h1>
         </div>
         <button className="bg-[#0095FF] text-white px-6 py-2 rounded-full hover:bg-blue-600">

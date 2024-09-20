@@ -5,8 +5,8 @@ const headerVeiw = () => {
   return (
     <header className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
         <div className="flex items-center">
-          <Image src="/assets/mainsectionIMAGES/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" />
-          <Image src="/assets/mainsectionIMAGES/EASYSPY.png" alt="EasySpy" width={120} height={24} />
+          <Image src="/assets/mainsectionImages/Union.png" alt="EasySpy Logo" width={30} height={30} className="mr-2" />
+          <Image src="/assets/mainsectionImages/EASYSPY.png" alt="EasySpy" width={120} height={24} />
         </div>
         <nav className="hidden lg:flex space-x-6 mr-64">
           <a href="#" className="text-gray-600 hover:text-gray-900">Home</a>
