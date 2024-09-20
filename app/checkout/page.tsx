@@ -4,7 +4,6 @@ import CheckoutPage from '@/components/checkout-page';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useEffect, useState } from 'react';
-import router from 'next/router';
 import GoBackButton from '@/components/ui/go-back-button';
 
 if (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY === undefined) {
