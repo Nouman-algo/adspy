@@ -24,7 +24,7 @@ export default function Checkout() {
       const parsedCredentials = JSON.parse(userCredentials);
       
       // Get the first key
-      let first_key = Object.keys(parsedCredentials)[0];
+      const first_key = Object.keys(parsedCredentials)[0];
       
       // Get the value of the first key
       const name = parsedCredentials[first_key];
