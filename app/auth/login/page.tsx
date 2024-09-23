@@ -232,7 +232,7 @@ function SignIn() {
             </div>
 
             <a
-              href="#"
+              href="/auth/forgot-password"
               className="text-blue-500 hover:underline text-sm md:text-base"
             >
               Forgot password?
