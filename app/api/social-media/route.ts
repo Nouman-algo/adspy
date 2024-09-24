@@ -3,13 +3,14 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db_connect';
 import { URL } from 'url';
 
-export default async function GET(req: Request) {
+export  async function GET(req: Request) {
   // Connect to MongoDB using dbConnect
   await dbConnect();
 
   // Parse the URL to extract the query parameter
   const url = new URL(req.url);
   const platform = url.searchParams.get('platform');  // Extract the 'platform' query param
+  console.log('platform',platform)
 
   if (!platform) {
     return NextResponse.json({ error: 'Platform parameter is required' }, { status: 400 });

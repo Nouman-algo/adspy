@@ -54,6 +54,17 @@ export interface DateEntry {
   export interface CountryEntry {
     country: string;
   }
+  export interface ImageEntry {
+    image_url: string | null;
+    image_alt: string | null;
+  }
+  
+  export interface VideoEntry {
+    video_url: string | null;
+    video_thumbnail: string | null;
+  }
+  
+  
   
   export interface SocialData {
     dates: DateEntry[];
@@ -70,5 +81,7 @@ export interface DateEntry {
     headingForwards: HeadingForwardEntry[];
     downloads: DownloadEntry[];
     countries: CountryEntry[];
+    images: ImageEntry[];  // Add ImageEntry interface for image data
+    videos: VideoEntry[];  // Add VideoEntry interface for video data
   }
   

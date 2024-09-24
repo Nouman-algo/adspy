@@ -18,21 +18,18 @@ export class TikTokRepository implements SocialMediaService {
       return latestData.toObject() as SocialData;
     }
 
-    // If no cached data or cache expired, fetch from API
-    const { TIKTOK_ACCESS_TOKEN } = process.env;
-    if (!TIKTOK_ACCESS_TOKEN) {
-      throw new SocialMediaError('TikTok access token not configured.', 500);
-    }
-
     try {
-      const response = await axios.get('https://open.tiktokapis.com/v1/your_endpoint', {
+      const response = await axios.get('https://ad-libraries.p.rapidapi.com/tiktok/search?query=all&country_code=all', {
         headers: {
-          Authorization: `Bearer ${TIKTOK_ACCESS_TOKEN}`,
-          'Content-Type': 'application/json',
+          'x-rapidapi-key': 'ae13c0660emsh10d9efe881b5c29p1bde2fjsnf5298b9eccdb', // Add your RapidAPI key here
+          'x-rapidapi-host': 'ad-libraries.p.rapidapi.com'
         },
       });
 
-      const data = this.transformData(response.data.data);
+      console.log(response.data); // Log the entire response to verify structure
+
+      // Pass the 'data' field from the response to transformData, which contains the ad data
+      const data = this.transformData(response.data.data); 
 
       // Store the transformed data in MongoDB
       await TikTokData.create(data);
@@ -44,23 +41,78 @@ export class TikTokRepository implements SocialMediaService {
     }
   }
 
-  private transformData(apiData: any): SocialData {
-    // Transform the TikTok data into SocialData format
+  private transformData(apiData: any[]): SocialData {
     return {
-      dates: apiData.map((item: any) => ({ date: item.date })),
-      platforms: apiData.map((item: any) => ({ platform: item.platform })),
-      languages: apiData.map((item: any) => ({ language: item.language })),
-      likes: apiData.map((item: any) => ({ count: item.likes })),
-      comments: apiData.map((item: any) => ({ count: item.comments })),
-      shares: apiData.map((item: any) => ({ count: item.shares })),
-      plays: apiData.map((item: any) => ({ count: item.plays })),
-      duration: apiData.map((item: any) => ({ duration: item.duration })),
-      status: apiData.map((item: any) => ({ status: item.status })),
-      audienceRegions: apiData.map((item: any) => ({ region: item.audience_region })),
-      descriptions: apiData.map((item: any) => ({ description: item.description })),
-      headingForwards: apiData.map((item: any) => ({ heading_forward: item.heading_forward })),
-      downloads: apiData.map((item: any) => ({ downloads: item.downloads })),
-      countries: apiData.map((item: any) => ({ country: item.country })),
+      dates: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          date: new Date(item.first_shown_date).toISOString(),  // Convert Date to ISO string
+          startDate: new Date(item.first_shown_date).toISOString(),  // Convert Date to ISO string
+          endDate: item.last_shown_date ? new Date(item.last_shown_date).toISOString() : null,  // Convert Date to ISO string or null
+      })),
+      platforms: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          platform: "tiktok",  // Since it's TikTok data
+      })),
+      languages: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          language: "unknown",  // Assuming no language data available
+      })),
+      likes: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          count: 0,  // No direct like count provided
+      })),
+      comments: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          count: 0,  // No direct comment count provided
+      })),
+      shares: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          count: 0,  // No direct share count provided
+      })),
+      plays: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          count: item.impression || 0,  // Assuming impression represents plays
+      })),
+      duration: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          duration: 0,  // No duration data provided
+      })),
+      status: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          status: item.audit_status === '1' ? "active" : "inactive",
+      })),
+      audienceRegions: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          region: "global",  // No region data, assuming global
+      })),
+      descriptions: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          description: item.name || "No description",  // Using the name field as the description
+      })),
+      headingForwards: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          heading_forward: item.title||null,  // No heading provided
+      })),
+      downloads: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          downloads: 0,  // No download data provided
+      })),
+      countries: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          country: "Unknown",  // No country data provided
+      })),
+      // Adding image and video data directly with the ID
+      images: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          image_url: item.image_urls?.[0] || null,  // Get the first image URL if available
+          image_alt: "No image",  // No alternative text provided, so a default value
+      })),
+      videos: apiData.map((item: any) => ({
+          id: item.id || null,  // Add the ad ID here
+          video_url: item.videos?.[0]?.video_url || null,  // Get the first video URL
+          video_thumbnail: item.videos?.[0]?.cover_img || null,  // Get the cover image as a thumbnail
+      })),
     };
   }
+  
 }

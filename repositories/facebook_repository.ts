@@ -15,26 +15,23 @@ export class FacebookRepository implements SocialMediaService {
 
     const latestData = await FacebookData.findOne().sort({ createdAt: -1 });
     if (latestData && (Date.now() - new Date(latestData.createdAt).getTime()) / 1000 < this.cacheTTL) {
-        return latestData.toObject() as SocialData;
-    }
-
-    // If no cached data or cache expired, fetch from API
-    const { FACEBOOK_ACCESS_TOKEN, FACEBOOK_PAGE_ID } = process.env;
-    if (!FACEBOOK_ACCESS_TOKEN || !FACEBOOK_PAGE_ID) {
-      throw new SocialMediaError('Facebook access token or page ID not configured.', 500);
+      return latestData.toObject() as SocialData;
     }
 
     try {
-      const endpoint = `https://graph.facebook.com/v17.0/${FACEBOOK_PAGE_ID}/insights`;
-      const response = await axios.get(endpoint, {
-        params: {
-          access_token: FACEBOOK_ACCESS_TOKEN,
-          metric: 'page_engagement,page_fans',
-          period: 'day',
+      const response = await axios.get('https://ad-libraries.p.rapidapi.com/meta/page/ads?page_id=434174436675167&platform=facebook', {
+        headers: {
+          'x-rapidapi-key': 'ae13c0660emsh10d9efe881b5c29p1bde2fjsnf5298b9eccdb',
+          'x-rapidapi-host': 'ad-libraries.p.rapidapi.com'
         },
       });
 
-      const data = this.transformData(response.data.data);
+      console.log(response.data);
+
+      // Flatten the nested results array
+      const ads = response.data.results.flat(); // Flatten the array of arrays inside `results`
+
+      const data = this.transformData(ads); // Pass the flattened array to transformData
 
       // Store the transformed data in MongoDB
       await FacebookData.create(data);
@@ -46,23 +43,77 @@ export class FacebookRepository implements SocialMediaService {
     }
   }
 
-  private transformData(apiData: any): SocialData {
-    // Transform the Facebook data into SocialData format
+  private transformData(apiData: any[]): SocialData {
     return {
-      dates: apiData.map((item: any) => ({ date: item.date })),
-      platforms: apiData.map((item: any) => ({ platform: item.platform })),
-      languages: apiData.map((item: any) => ({ language: item.language })),
-      likes: apiData.map((item: any) => ({ count: item.likes })),
-      comments: apiData.map((item: any) => ({ count: item.comments })),
-      shares: apiData.map((item: any) => ({ count: item.shares })),
-      plays: apiData.map((item: any) => ({ count: item.plays })),
-      duration: apiData.map((item: any) => ({ duration: item.duration })),
-      status: apiData.map((item: any) => ({ status: item.status })),
-      audienceRegions: apiData.map((item: any) => ({ region: item.audience_region })),
-      descriptions: apiData.map((item: any) => ({ description: item.description })),
-      headingForwards: apiData.map((item: any) => ({ heading_forward: item.heading_forward })),
-      downloads: apiData.map((item: any) => ({ downloads: item.downloads })),
-      countries: apiData.map((item: any) => ({ country: item.country })),
+      dates: apiData.map((item: any) => ({
+        id: item.adid || null,
+        date: item.creation_time ? new Date(item.creation_time * 1000).toISOString() : "",  // Fallback to empty string if date is invalid
+        startDate: item.startDate ? new Date(item.startDate * 1000).toISOString() : "",  // Fallback to empty string if startDate is invalid
+        endDate: item.endDate ? new Date(item.endDate * 1000).toISOString() : "",  // Fallback to empty string if endDate is invalid
+      })),
+      platforms: apiData.map((item: any) => ({
+        id: item.adid || null,
+        platform: item.publisherPlatform || [],  // Array of platforms
+      })),
+      languages: apiData.map(() => ({
+        id: null,
+        language: "unknown",  // Assuming no language data available
+      })),
+      likes: apiData.map((item: any) => ({
+        id: item.adid || null,
+        count: item.page_like_count || 0,
+      })),
+      comments: apiData.map(() => ({
+        id: null,
+        count: 0,  // Assuming no direct comment data
+      })),
+      shares: apiData.map(() => ({
+        id: null,
+        count: 0,  // Assuming no direct share data
+      })),
+      plays: apiData.map((item: any) => ({
+        id: item.adid || null,
+        count: item.impressionsWithIndex?.impressionsIndex || 0,
+      })),
+      duration: apiData.map(() => ({
+        id: null,
+        duration: 0,  // No duration data provided
+      })),
+      status: apiData.map((item: any) => ({
+        id: item.adid || null,
+        status: item.isActive ? "active" : "inactive",
+      })),
+      audienceRegions: apiData.map(() => ({
+        id: null,
+        region: "global",  // No region data, assuming global
+      })),
+      descriptions: apiData.map((item: any) => ({
+        id: item.adid || null,
+        description: item.body?.markup?.__html || "No description",
+      })),
+      headingForwards: apiData.map((item:any) => ({
+        id: null,
+        heading_forward: item.title||null,  // No heading provided
+      })),
+      downloads: apiData.map(() => ({
+        id: null,
+        downloads: 0,  // No download data provided
+      })),
+      countries: apiData.map(() => ({
+        id: null,
+        country: "Unknown",  // No country data provided
+      })),
+      // Adding image and video data
+      images: apiData.map((item: any) => ({
+        id: item.adid || null,
+        image_url: item.snapshot?.images?.[0]?.url || null,  // Assuming snapshot contains image URLs
+        image_alt: "No image",  // Alternative text for image
+      })),
+      videos: apiData.map((item: any) => ({
+        id: item.adid || null,
+        video_url: item.snapshot?.videos?.[0]?.video_hd_url || item.snapshot?.videos?.[0]?.video_sd_url || null,  // Get the HD or SD URL of the video
+        video_thumbnail: item.snapshot?.videos?.[0]?.video_preview_image_url || null,  // Thumbnail for video
+      })),
     };
   }
 }
