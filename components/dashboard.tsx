@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 import { FaPlay, FaEye, FaHeart, FaShareAlt } from 'react-icons/fa';
+import HeaderVeiw from '@/components/headerVeiw'
+import FooterVeiw from '@/components/footerveiw'
 
 
 
 interface FilterOption {
     title: string;
-    options: Array<string | JSX.Element>;
+    options: Array<string | JSX.Elemen>;
 }
 
 const filters: FilterOption[] = [
@@ -374,6 +376,8 @@ const Dashboard = () => {
 
     return (
         <div>
+            <HeaderVeiw />
+
             {/* Browse Ads Section */}
             <div className=" mx-auto px-4 py-8">
                 <h1 className="text-center text-4xl font-bold mb-4">Browse Ads</h1>
@@ -527,6 +531,7 @@ const Dashboard = () => {
 
                 </div>
             </div>
+            <FooterVeiw />
         </div>
     )
 }
