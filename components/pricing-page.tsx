@@ -60,12 +60,12 @@ const PricingPage: React.FC = () => {
     },
   ];
 
-  const handlePlanClick = (price: string) => {
+  const handlePlanClick = (planName: string, price: string) => {
     // Convert price string to a number (strip the $ symbol)
     const numericPrice = parseFloat(price.replace('$', ''));
     
-    // Redirect to the checkout page with the price as a query parameter
-    router.push(`/checkout?amount=${numericPrice}`);
+    // Redirect to the checkout page with the plan name and price as query parameters
+    router.push(`/checkout?plan=${planName}&amount=${numericPrice}`);
   };
 
   return (
@@ -91,13 +91,15 @@ const PricingPage: React.FC = () => {
                 </div>
                 <button
                   className="bg-blue-500 text-white py-2 px-4 rounded-full w-full"
-                  onClick={() => handlePlanClick(plan.price)} // Handle button click
+                  onClick={() => handlePlanClick(plan.name, plan.price)} // Pass both plan name and price
                 >
                   {plan.buttonText}
                 </button>
                 {plan.skipTrialText && (
                   <p className="mt-2 text-blue-500">
-                    <a href="#" onClick={() => handlePlanClick(plan.price)}>{plan.skipTrialText}</a>
+                    <a href="#" onClick={() => handlePlanClick(plan.name, plan.price)}>
+                      {plan.skipTrialText}
+                    </a>
                   </p>
                 )}
                 <hr className="mt-7 bg-slate-400 h-[1px]" />
@@ -116,132 +118,17 @@ const PricingPage: React.FC = () => {
               </div>
             ))}
           </div>
-
-          {/* Key Feature Table */}
-          <div className="my-5">
-            <h1 className="font-semibold text-2xl mb-5">Key Feature Detail</h1>
-          </div>
-
-          <div className="container mx-auto p-4">
-            <table className="min-w-full">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="px-4 py-2 border">Features</th>
-                  <th className="px-4 py-2 border">Free</th>
-                  <th className="px-4 py-2 border">Starter</th>
-                  <th className="px-4 py-2 border">VIP</th>
-                  <th className="px-4 py-2 border">PRO</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="px-4 py-2 border">Ads per query</td>
-                  <td className="px-4 py-2 border">40</td>
-                  <td className="px-4 py-2 border">100</td>
-                  <td className="px-4 py-2 border">5000</td>
-                  <td className="px-4 py-2 border">10000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Ads details per day</td>
-                  <td className="px-4 py-2 border">0</td>
-                  <td className="px-4 py-2 border">50</td>
-                  <td className="px-4 py-2 border">200</td>
-                  <td className="px-4 py-2 border">1000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Product per query</td>
-                  <td className="px-4 py-2 border">10</td>
-                  <td className="px-4 py-2 border">200</td>
-                  <td className="px-4 py-2 border">2000</td>
-                  <td className="px-4 py-2 border">3000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Product details per day</td>
-                  <td className="px-4 py-2 border">10</td>
-                  <td className="px-4 py-2 border">50</td>
-                  <td className="px-4 py-2 border">200</td>
-                  <td className="px-4 py-2 border">1000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Advertise per query</td>
-                  <td className="px-4 py-2 border">5</td>
-                  <td className="px-4 py-2 border">50</td>
-                  <td className="px-4 py-2 border">1000</td>
-                  <td className="px-4 py-2 border">3000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Advertise per day</td>
-                  <td className="px-4 py-2 border">5</td>
-                  <td className="px-4 py-2 border">50</td>
-                  <td className="px-4 py-2 border">200</td>
-                  <td className="px-4 py-2 border">1000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Tiktok shop per query</td>
-                  <td className="px-4 py-2 border">8</td>
-                  <td className="px-4 py-2 border">200</td>
-                  <td className="px-4 py-2 border">2000</td>
-                  <td className="px-4 py-2 border">3000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 py-2 border">Tiktok shop per day</td>
-                  <td className="px-4 py-2 border">8</td>
-                  <td className="px-4 py-2 border">50</td>
-                  <td className="px-4 py-2 border">200</td>
-                  <td className="px-4 py-2 border">1000</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center mb-8">
             <div className="flex items-center mb-4 md:mb-0">
-              <h1 className='text-white font-bold'>EASYSPY</h1>
+              <h1 className="text-white font-bold">EASYSPY</h1>
             </div>
             <button className="bg-[#0095FF] text-white px-6 py-2 rounded-full hover:bg-blue-600">
               Get Started
             </button>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div>
-              <h4 className="font-semibold mb-4">Product</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white">TikTok Adspy</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Facebook Adspy</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Ad Library</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Pricing</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Resources</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white">Blog</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Help Center</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Status</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white">About Us</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Careers</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white">Terms</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Privacy</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white">Cookies</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="mt-12 text-center text-gray-400">
-            © 2023 EasySpy. All rights reserved.
           </div>
         </div>
       </footer>
