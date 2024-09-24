@@ -9,8 +9,9 @@ class UserRepository {
   }
 
   async findByEmail(email: string): Promise<IUser | null> {
-    return User.findOne({ email });
+    return User.findOne({ email }).exec(); 
   }
+  
 }
 
 export default UserRepository;
