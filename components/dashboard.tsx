@@ -224,6 +224,24 @@ const filters: FilterOption[] = [
             </div>
         ]
     },
+    
+    {
+        title: 'shares',
+        options: [
+            <div key="share-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="radio"
+                        id="share-most"
+                        name="share"
+                        value="most"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                    <label htmlFor="share-most" className="text-sm font-medium text-gray-700">Most commented</label>
+                </div>
+            </div>
+        ]
+    },
     {
         title: 'Plays',
         options: [
@@ -252,7 +270,7 @@ const filters: FilterOption[] = [
         ]
     },
     {
-        title: 'Forwards',
+        title: 'Duration',
         options: [
             <div key="forwards-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
                 <div className="flex items-center space-x-2">
@@ -278,6 +296,75 @@ const filters: FilterOption[] = [
             </div>
         ]
     },
+    {
+        title: 'Status',
+        options: [
+            <div key="status-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="radio"
+                        id="status-most"
+                        name="status"
+                        value="most"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                    <label htmlFor="status-most" className="text-sm font-medium text-gray-700">Most commented</label>
+                </div>
+            </div>
+        ]
+    },
+    {
+        title: 'Audience Regions',
+        options: [
+            <div key="audienceRegions-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="radio"
+                        id="audienceRegions-most"
+                        name="audienceRegions"
+                        value="most"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                    <label htmlFor="share-most" className="text-sm font-medium text-gray-700">Most commented</label>
+                </div>
+            </div>
+        ]
+    },
+    {
+        title: 'Description',
+        options: [
+            <div key="Description-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="radio"
+                        id="Description-most"
+                        name="Description"
+                        value="most"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                    <label htmlFor="Description-most" className="text-sm font-medium text-gray-700">Most commented</label>
+                </div>
+            </div>
+        ]
+    },
+    {
+        title: 'Heading Farward',
+        options: [
+            <div key="HeadingFarward-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="radio"
+                        id="HeadingFarward-most"
+                        name="HeadingFarward"
+                        value="most"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                    <label htmlFor="HeadingFarward-most" className="text-sm font-medium text-gray-700">Most commented</label>
+                </div>
+            </div>
+        ]
+    },
+    
     {
         title: 'Downloads',
         options: [
@@ -338,6 +425,40 @@ const filters: FilterOption[] = [
                         className="h-4 w-4 text-blue-600 border-gray-300 rounded"
                     />
                     <label htmlFor="country-uk" className="text-sm font-medium text-gray-700">UK</label>
+                </div>
+            </div>
+        ]
+    },
+    {
+        title: 'Images',
+        options: [
+            <div key="images-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="radio"
+                        id="images-most"
+                        name="images"
+                        value="most"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                    <label htmlFor="images-most" className="text-sm font-medium text-gray-700">Most commented</label>
+                </div>
+            </div>
+        ]
+    },
+    {
+        title: 'Videos',
+        options: [
+            <div key="Videos-row" className="flex space-x-4 p-2 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-2">
+                    <input
+                        type="radio"
+                        id="Videos-most"
+                        name="Videos"
+                        value="most"
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                    />
+                    <label htmlFor="Videos-most" className="text-sm font-medium text-gray-700">Most commented</label>
                 </div>
             </div>
         ]
@@ -421,12 +542,21 @@ const Dashboard = () => {
                 </div>
                 <div className="line h-[1px]  bg-[#cecbcb] my-2" ></div>
 
-                <div className="flex items-center justify-center py-1 ">
-                    {filters.map((filter, index) => (
+                <div className="flex items-center justify-center py-2 flex-col ">
+                <div className="relative w-full">
+                        <input type="text" className="px-4  py-2 pl-10 w-full bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
+                            placeholder="Search" />
+                        <svg className="w-5 h-5 text-gray-400 absolute top-3 left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <div className="flex flex-wrap my-2">
+                        {filters.map((filter, index) => (
                         <div key={index} className="relative">
                             <button
                                 onClick={() => toggleDropdown(index)}
-                                className="flex items-center text-sm font-semibold px-2 text-gray-700"
+                                className="flex items-center text-sm font-semibold px-2 py-2 text-gray-700"
                             >
                                 {filter.title}
                                 <svg
@@ -454,15 +584,13 @@ const Dashboard = () => {
                             )}
                         </div>
                     ))}
-                    <div className="relative">
-                        <input type="text" className="px-4  py-2 pl-10 bg-gray-50 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500"
-                            placeholder="Search" />
-                        <svg className="w-5 h-5 text-gray-400 absolute top-3 left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                        </svg>
                     </div>
+                    
+                    
                 </div>
+
+
+
 
                 <div className="line h-[1px]  bg-[#cecbcb] my-2" ></div>
 
