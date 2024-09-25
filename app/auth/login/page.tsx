@@ -69,10 +69,11 @@ function SignIn() {
 
         // Set JWT token in a cookie
         document.cookie = `token=${result.token}; path=/; Secure; HttpOnly; SameSite=Strict`;
+        localStorage.setItem('token',result.token)
 
         // Redirect to home page
         setTimeout(() => {
-          router.push("/"); // Redirect to home or any other route
+          router.push("/dashboard"); // Redirect to home or any other route
         }, 1000);
       } else {
         // Handle errors
@@ -119,11 +120,11 @@ function SignIn() {
         setSuccess("Login successful!");
 
         // Set JWT token in a cookie
-        document.cookie = `token=${result.token}; path=/; Secure; HttpOnly; SameSite=Strict`;
+        document.cookie = `token=${result.token}; path=/dashboard; Secure; HttpOnly; SameSite=Strict`;
 
         // Redirect to home page
         setTimeout(() => {
-          router.push("/"); // Redirect to home or any other route
+          router.push("/dashboard"); // Redirect to home or any other route
         }, 1000);
       } else {
         setError(result.error || "An unexpected error occurred");

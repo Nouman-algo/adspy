@@ -79,7 +79,7 @@ export default function Checkout() {
                     currency: 'usd',
                 }}
             >
-                <CheckoutPage amount={numericAmount} isValidPlan={isValidPlan} />
+                <CheckoutPage amount={numericAmount} isValidPlan={isValidPlan} plan={planName} />
 
                 <GoBackButton/>
             </Elements>

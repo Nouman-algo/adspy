@@ -6,7 +6,7 @@ import { randomBytes } from 'crypto';
 const UserSchema = new Schema<IUser>({
     fullName:{ type: String, required: true },
     email: { type: String, required: true, unique: true },
-    password: { type: String},
+    password: { type: String,required:true},
     selectedPackage:{ type: String, required: true },
 
     createdAt: { type: Date, default: Date.now },

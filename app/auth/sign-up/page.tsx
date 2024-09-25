@@ -108,7 +108,6 @@ function SignUp() {
 
       // Handle success: redirect to login page after registration
       setSuccessMessage("Registration successful! Redirecting to login page...");
-      localStorage.removeItem("userCredentials");  // Clear localStorage after registration
       setTimeout(() => router.push("/auth/login"), 2000); // Redirect after a short delay
 
     } catch (error: any) {

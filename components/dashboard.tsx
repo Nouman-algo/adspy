@@ -9,7 +9,7 @@ import FooterVeiw from '@/components/footerveiw'
 
 interface FilterOption {
     title: string;
-    options: Array<string | JSX.Elemen>;
+    options: Array<string | JSX.Element>;
 }
 
 const filters: FilterOption[] = [

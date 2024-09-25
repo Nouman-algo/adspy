@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import router from "next/router";
 
-const CheckoutPage = ({ amount, isValidPlan }: { amount: number; isValidPlan: boolean }) => {
+const CheckoutPage = ({ amount, isValidPlan,plan }: { amount: number; isValidPlan: boolean,plan:string|null }) => {
     const stripe = useStripe();
     const elements = useElements();
     const [clientSecret, setClientSecret] = useState("");
@@ -42,14 +42,14 @@ const CheckoutPage = ({ amount, isValidPlan }: { amount: number; isValidPlan: bo
             elements,
             clientSecret,
             confirmParams: {
-                return_url: `${window.location.origin}/payment-success?amount=${amount}`,
+                return_url: `${window.location.origin}/payment-success?amount=${amount}&plan=${plan}`,
             },
         });
 
         if (error) {
             setErrorMessage(error.message);
         } else {
-            router.push(`/payment-success?amount=${amount}`);
+            router.push(`/payment-success?amount=${amount}&plan=${plan}`);
         }
         setLoading(false);
     };
