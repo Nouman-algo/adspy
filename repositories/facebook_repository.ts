@@ -19,7 +19,7 @@ export class FacebookRepository implements SocialMediaService {
     }
 
     try {
-      const response = await axios.get('https://ad-libraries.p.rapidapi.com/meta/page/ads?page_id=434174436675167&platform=facebook', {
+      const response = await axios.get('https://ad-libraries.p.rapidapi.com/meta/page/ads?page_id=434174436675167&platform=facebook&media_types=all&active_status=all', {
         headers: {
           'x-rapidapi-key': 'ae13c0660emsh10d9efe881b5c29p1bde2fjsnf5298b9eccdb',
           'x-rapidapi-host': 'ad-libraries.p.rapidapi.com'
