@@ -69,7 +69,7 @@ const Dashboard = () => {
     setError("");
     try {
       const response = await axios.get<ApiResponse>(
-        `http://localhost:3000/api/social-media?platform=${selectedPlatform}`
+        `/api/social-media?platform=${selectedPlatform}`
       );
       const transformedData = transformResponseData(response.data);
       setData(transformedData);
