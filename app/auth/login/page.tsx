@@ -95,7 +95,7 @@ function SignIn() {
   }
   else{
     console.log(session.user)
-    const {email ,name} = session.user;
+    const {email } = session.user;
     const userCredentials = {
       email:email,
     }

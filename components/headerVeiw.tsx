@@ -76,7 +76,7 @@ const HeaderView = () => {
           <div className="relative">
             <button onClick={toggleDropdown} className="focus:outline-none">
               <Image
-                src="https://imgur.com/8CVSH15" // Replace with your profile icon
+                src="https://i.imgur.com/kQbx35z.jpg" // Replace with your profile icon
                 alt="Profile"
                 width={40}
                 height={40}
