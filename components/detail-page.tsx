@@ -3,35 +3,47 @@
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import {FaShareAlt , FaHeart , FaEye , FaPlay , FaComment, FaThumbsUp, FaShareSquare, FaCalendarAlt } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
 
 
 const DetailPage = () => {
   const searchParams = useSearchParams();
-  const imageUrl = searchParams.get('image'); // Get the image URL from the query
-
+  // Extract all ad details from URL parameters
+  const image = searchParams.get("image");
+  const description = searchParams.get("description");
+  const createdDate = searchParams.get("createdDate");
+  const endDate = searchParams.get("endDate");
+  const views = searchParams.get("views");
+  const likes = searchParams.get("likes");
+  const shares = searchParams.get("shares");
+  const duration = searchParams.get("duration");
+  const videoUrl = searchParams.get("videoUrl");
+  
+  
   return (
     <>
       <div className='bg-black w-[95vw] my-4 mx-auto'>
-        <div className=' flex justify-center items-center'>
-          {imageUrl ? (
-            <Image
-              src={decodeURIComponent(imageUrl)}
-              alt="Detail Image"
-              width={300}
-              height={300}
-              className="object-cover"
-            />
-          ) : (
-            <p>No image found</p>
-          )}
-        </div>
+      <div className='flex justify-center items-center'>
+  {videoUrl ? (
+    <video
+      src={decodeURIComponent(videoUrl)}
+      width={300}
+      height={300}
+      controls
+      className="object-cover"
+    />
+  ) : (
+    <p>No image found</p>
+  )}
+</div>
+
 
 
       </div>
 
       <div className=' w-[95vw] my-4 mx-auto flex justify-between'>
         <div className='w-2/4'>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime quidem animi quia eligendi quasi amet sit.</p>
+          <p>{description}</p>
         </div>
         <div className="btn flex gap-3">
           <button className='px-5 border focus:text-white focus:bg-blue-500 rounded-full text-blue-500 font-semibold hover:border-blue-500'>
@@ -62,7 +74,7 @@ const DetailPage = () => {
             <FaThumbsUp />
           </div>
           <div className="flex flex-col gap">
-            <span className='text-sm'>24k</span>
+            <span className='text-sm'>{likes}</span>
             <span className='text-sm'>likes</span>
           </div>
         </div>
@@ -71,7 +83,7 @@ const DetailPage = () => {
             <FaComment />
           </div>
           <div className="flex flex-col gap">
-            <span className='text-sm'>3.2k</span>
+            <span className='text-sm'>0</span>
             <span className='text-sm'>coments</span>
           </div>
         </div>
@@ -81,7 +93,7 @@ const DetailPage = () => {
           <FaShareSquare />
           </div>
           <div className="flex flex-col gap">
-            <span className='text-sm'>500</span>
+            <span className='text-sm'>{shares}</span>
             <span className='text-sm'>shares</span>
           </div>
         </div>
@@ -91,7 +103,7 @@ const DetailPage = () => {
           <div className='bg-[#dfdbdb] rounded-xl p-3 gap-1'>
           <FaShareSquare  /> </div>
           <div className="flex flex-col gap">
-            <span className='text-sm'>93</span>
+            <span className='text-sm'>{duration}</span>
             <span className='text-sm'>duration</span>
           </div>
         </div>
@@ -101,7 +113,7 @@ const DetailPage = () => {
           <div className='bg-[#dfdbdb] rounded-xl p-3 gap-1'>
           <FaCalendarAlt /></div>
           <div className="flex flex-col gap">
-            <span className='text-sm'>Nov 9 2023</span>
+            <span className='text-sm'>{createdDate}</span>
             <span className='text-sm'>Start date</span>
           </div>
         </div>
@@ -110,7 +122,7 @@ const DetailPage = () => {
           <div className='bg-[#dfdbdb] rounded-xl p-3 gap-1'>
           <FaCalendarAlt /></div>
           <div className="flex flex-col gap">
-           <span className='text-sm'>Nov 9 2013</span>
+           <span className='text-sm'>{endDate}</span>
             <span className='text-sm'>End date</span>
           </div>
         </div>
@@ -132,14 +144,17 @@ const DetailPage = () => {
 <div className="max-w-xs  w-[20%] rounded-2xl overflow-hidden shadow-lg bg-white">
                                 {/* Image Section */}
                                 <div className="relative">
-                                    <Image
-                                        src="/assets/tiktok-adds-img/tiktokaddimg.jpeg"
-                                        alt="Video Thumbnail"
-                                        width={400}
-                                        height={250}
-                                        className="object-cover"
-                                       
-                                    />
+                                {videoUrl ? (
+    <video
+      src={decodeURIComponent(videoUrl)}
+      width={300}
+      height={300}
+      controls
+      className="object-cover"
+    />
+  ) : (
+    <p>No image found</p>
+  )}
 
                                     {/* Play Button */}
                                     <div className="absolute top-2 left-2 bg-white bg-opacity-50 p-2 rounded-full">
@@ -154,21 +169,21 @@ const DetailPage = () => {
                                         WARNING: confidence lev...
                                     </h3>
                                     {/* Creation Date */}
-                                    <p className="text-sm text-gray-500">Created on 20 August, 2024</p>
+                                    <p className="text-sm text-gray-500">{createdDate}</p>
 
                                     {/* Stats */}
                                     <div className="mt-3 flex items-center text-gray-500 space-x-4">
                                         <div className="flex items-center space-x-1">
                                             <FaEye />
-                                            <span>24k</span>
+                                            <span>{likes}</span>
                                         </div>
                                         <div className="flex items-center space-x-1">
                                             <FaHeart />
-                                            <span>50k</span>
+                                            <span>{views}</span>
                                         </div>
                                         <div className="flex items-center space-x-1">
                                             <FaShareAlt />
-                                            <span>2k</span>
+                                            <span>{shares}</span>
                                         </div>
                                     </div>
                                 </div>

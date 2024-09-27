@@ -5,12 +5,15 @@ import { FaPlay, FaEye, FaHeart, FaShareAlt } from "react-icons/fa";
 import axios from "axios";
 import HeaderVeiw from "@/components/headerVeiw";
 import FooterVeiw from "@/components/footerveiw";
+import Link from "next/link";
 
 // Define the type for the data structure returned by the API
 interface SocialMediaData {
+  comments: string | number | boolean | readonly string[] | readonly number[] | readonly boolean[] | null | undefined;
   image: string | null;
   description: string;
   createdDate: string;
+  endDate:string;
   views: number;
   likes: number;
   shares: number;
@@ -21,11 +24,14 @@ interface SocialMediaData {
 
 // Define the response structure from the API
 interface ApiResponse {
-  dates: { startDate: string }[];
+  dates: {
+    endDate: any; startDate: string 
+}[];
   images: { image_url: string }[];
   descriptions: { description: string }[];
   plays: { count: number }[];
   likes: { count: number }[];
+  comments:{count:number}[];
   shares: { count: number }[];
   videos: { video_url: string; video_thumbnail: string; duration: number }[]; // Add duration in videos response
 }
@@ -49,6 +55,7 @@ const Dashboard = () => {
     searchQuery: "", // Add search query state
   });
 
+  
   // Pagination states
   const [visibleAds, setVisibleAds] = useState<number>(10); // initial number of ads to display
 
@@ -66,6 +73,7 @@ const Dashboard = () => {
       );
       const transformedData = transformResponseData(response.data);
       setData(transformedData);
+      localStorage.setItem('ads',JSON.stringify(data))
       setFilteredData(transformedData); // Set filteredData to full dataset initially
     } catch (err) {
       setError("Failed to fetch data. Please try again.");
@@ -81,8 +89,10 @@ const Dashboard = () => {
       description:
         response.descriptions[index]?.description || "No description",
       createdDate: dateItem.startDate,
+      endDate:dateItem.endDate,
       views: response.plays[index]?.count || 0,
       likes: response.likes[index]?.count || 0,
+      comments:response.comments[index]?.count||0,
       shares: response.shares[index]?.count || 0,
       videoUrl: response.videos[index]?.video_url || null,
       videoThumbnail: response.videos[index]?.video_thumbnail || null,
@@ -579,7 +589,19 @@ const Dashboard = () => {
                         <FaShareAlt />
                         <span>{item.shares}</span>
                       </div>
+
                     </div>
+                    <Link legacyBehavior
+                    href={{
+                      pathname: "/detail-page",
+                      query: { ...item,duration:item.videoUrl?.length,comments:item.comments,endDate:item.endDate, }, // Pass all ad details as query params
+                    }}
+                    passHref
+                  >
+                    <a className="mt-3 bg-blue-500 text-white text-center py-2 rounded-lg">
+                      View Details
+                    </a>
+                  </Link>
                   </div>
                 </div>
               ))

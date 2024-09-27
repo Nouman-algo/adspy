@@ -21,7 +21,7 @@ export class TikTokRepository implements SocialMediaService {
     try {
       const response = await axios.get('https://ad-libraries.p.rapidapi.com/tiktok/search?query=all&country_code=all', {
         headers: {
-          'x-rapidapi-key': 'ae13c0660emsh10d9efe881b5c29p1bde2fjsnf5298b9eccdb', // Add your RapidAPI key here
+          'x-rapidapi-key': 'e5eb957b3dmshaa99b869b1c33aap1aeb24jsnc1496afc7785', // Add your RapidAPI key here
           'x-rapidapi-host': 'ad-libraries.p.rapidapi.com'
         },
       });
